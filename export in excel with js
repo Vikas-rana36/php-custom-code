@@ -1,0 +1,64 @@
+ $( ".button" ).click(function() {
+   var clickBtnValue = $(this).val();
+   ///alert(clickBtnValue);
+	  var i=1;
+  var visibleForm = $('div.watu-question:visible');
+  var pqexcel = visibleForm.find('div.question-content p').text(); //get the field value
+  var paexcel = visibleForm.find('div#inline_content').text(); // get the field value 
+  var notefeed = visibleForm.find('div.notefeed').text(); // get the field value 
+  var respo = pqexcel + paexcel + notefeed; // concatenate all values 
+  
+  // script for create excel on click 
+  
+	var data_type='data:application/vnd.ms-excel';
+	var result = respo.replace('/ /g', "%20");
+
+	var a = document.createElement('a');
+	a.id='file_export';
+	a.href = data_type + ', ' + result;
+	a.download = '<?php echo $_SERVER['DOCUMENT_ROOT'];?>/pdfquiz/profiles.xls'; //path for save files. 
+	$("div#result").html(a);
+	a.click();
+	
+<!---ends here--->	
+  
+	/*This for a single page ajax using for create excel on click*/
+	
+/*	$.ajax ({
+            data: "action="+clickBtnValue+"&qus="+pqexcel+"&ans="+paexcel,
+			//data: {'action': clickBtnValue},
+			type: 'post',
+            success: function( result ) {
+                alert("Hi, testing");
+				$('div#result').text('Button clicked: ' + result);
+            }
+        });*/
+	  
+});
+
+<?php
+// using php for single page ajax
+if(isset($_POST["action"]))
+{
+	 
+    switch($_POST["action"])
+    {
+        case "Export to excel" :
+            // Submission from
+			$filename = $_POST["action"] . ".xls";		 
+            header("Content-Type: application/vnd.ms-excel");
+			header("Content-Disposition: attachment; filename=\"$filename\"");
+			$stuff="PART\tQTY\tVALUE\t\n";
+			$stuff=$stuff.$_POST["qus"]."\t\n";
+			$stuff=$stuff.$_POST["ans"]."\t\n";
+			//$stuff=$stuff."01-001-0003\t12\t7.11\t\n";
+			echo $stuff;
+			//$_POST["ExportType"] = '';
+            exit();
+        default :
+            die("Unknown action : ".$_POST["action"]);
+            break;
+    }
+}
+
+?>
