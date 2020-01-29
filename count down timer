@@ -1,0 +1,74 @@
+<div id="timer">
+  <span id="days"></span>days
+  <span id="hours"></span>hours
+  <span id="minutes"></span>minutes
+  <span id="seconds"></span>seconds
+</div>
+<style>
+body {
+  background: #f5f5f5;
+}
+#timer {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  color: #999;
+  letter-spacing: -1px;
+}
+#timer span {
+  font-size: 60px;
+  color: #333;
+  margin: 0 3px 0 15px;
+}
+#timer span:first-child {
+  margin-left: 0;
+}
+  
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+var timer;
+
+var compareDate = new Date("2018-09-30");
+//compareDate.setDate(compareDate.getDate() + 13); //just for this demo today + 7 days
+
+timer = setInterval(function() {
+  timeBetweenDates(compareDate);
+}, 1000);
+
+function timeBetweenDates(toDate) {
+  var dateEntered = toDate;
+  var now = new Date();
+  var difference = dateEntered.getTime() - now.getTime();
+ 
+
+  if (difference <= 0) {
+
+    // Timer done
+    clearInterval(timer);
+  
+  } else {
+    
+    var seconds = Math.floor(difference / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+
+    hours %= 24;
+    minutes %= 60;
+    seconds %= 60;
+
+    $("#days").text(days);
+    $("#hours").text(hours);
+    $("#minutes").text(minutes);
+    $("#seconds").text(seconds);
+  }
+}
+</script>
+
+<?php 
+
+$datetime1 = new DateTime(date('Y-m-d H:i:s'));
+$datetime2 = new DateTime('2018-09-30 05:36:56 AM');
+$interval = $datetime1->diff($datetime2);
+echo $interval->format('%a')." Days ".$interval->format('%h')." Hours ".$interval->format('%i')." Minutes ".$interval->format('%s')." Seconds"; 
+?>
