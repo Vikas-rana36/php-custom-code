@@ -1,0 +1,25 @@
+<h1>Indexed Array to multidimention Array</h1>
+<?php 
+$firstarr = array(111,222,333);
+$secndarr = array('aaa','bbb','ccc','ddd');
+$thirdarr = array('vikas','prashant','rahul','abhisheak');
+
+$length = count($firstarr) > count($secndarr) ? count($firstarr) : count($secndarr);
+$myarr = array();
+	for($i=0; $i<$length; $i++){
+	    if(array_key_exists($i, $firstarr)){ 
+			$myarr[$i][] = $firstarr[$i];
+	    }
+	    if(array_key_exists($i, $secndarr)){
+			$myarr[$i][] = $secndarr[$i];
+	    }	
+	    if(array_key_exists($i, $thirdarr)){
+			$myarr[$i][] = $thirdarr[$i];
+	    }
+	}
+		  	
+echo "<pre>";
+			print_r($myarr);
+		echo "</pre>";
+			
+?>
