@@ -1,0 +1,67 @@
+<html> 
+<title>user unload window</title>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+//var startTime = new Date();
+var startsecond = new Date().getTime() / 1000;
+//var endTime;
+
+$(window).on('beforeunload', function(){
+	//endTime = new Date();
+	var endsec = new Date().getTime() / 1000;
+	var userip = "<?php echo $_SERVER['REMOTE_ADDR']; ?>";
+ //var elapsedSeconds = endTime - startTime;
+ var elapsedSeconds = endsec - startsecond;
+	$.ajax ({
+            data: "action=submit&elapsedSeconds="+elapsedSeconds+"&userip="+userip,
+			//data: {'action': clickBtnValue},
+			type: 'post',
+			async : false,
+            success: function( result ) {
+				$('div#result').text('Button clicked: ' + result);
+            }
+        });
+	
+      //return 'Are you sure you want to leave?';
+});
+</script>
+</head>
+<body>
+<h1>This is for calculate user time.</h1>
+<h2>IP Address: <?php echo $_SERVER['REMOTE_ADDR']; ?></h2>
+<input type="text" class="usertime" name="usert" value="">
+<?php
+if(isset($_POST['action'])){
+	//global $wpdb;
+	$ip = $_POST['userip'];
+	$curdate = date("d/m/Y");
+	$elapsedSeconds = round($_POST['elapsedSeconds']);
+	$hours = floor($elapsedSeconds / 3600);
+	$mins = floor($elapsedSeconds / 60 % 60);
+	$secs = floor($elapsedSeconds % 60);
+	$totalspent = $curdate." ".$hours.":".$mins.":".$secs;
+	//$datetime =  date('m/d/Y H:i:s', $timestamp);
+//$qry = $wpdb->query("insert into table_name ('user_ip', 'timespent') values ('$ip', $elapsedSeconds)");
+	
+	$conn = new mysqli('localhost', 'root', '', 'vky_script_test');
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$sql = "INSERT INTO `testing`(`user_ip`, `timespent`) VALUES ('$ip','$totalspent')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+}
+
+
+?>
+</body>
+</html>
