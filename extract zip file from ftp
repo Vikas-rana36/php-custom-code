@@ -1,0 +1,22 @@
+<?php
+//Note:- This code will unzip (extract) the zip file. just update the name of the file 'archive.zip' with the name of your file. and upload this file at same directory. then run this file using its url in brower. it will extract the metioned file.
+
+//This is best to extract the file in server throught ftp
+
+// assuming archive.zip is in the same directory as the executing script.
+$file = 'dev.zip';
+
+// get the absolute path to $file
+$path = pathinfo(realpath($file), PATHINFO_DIRNAME);
+
+$zip = new ZipArchive;
+$res = $zip->open($file);
+if ($res === TRUE) {
+  // extract it to the path we determined above
+  $zip->extractTo($path."/");
+  $zip->close();
+  echo "WOOT! $file extracted to $path";
+} else {
+  echo "Doh! I couldn't open $file";
+}
+?>
