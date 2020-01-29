@@ -1,0 +1,11 @@
+var startTime = new Date();
+var endTime;
+
+window.onunload = function()
+{
+ endTime = new Date();
+ var elapsedSeconds = endTime.getTime() - startTime.getTime();
+ //Do the ajax request, sending elapsedSeconds
+ alert(elapsedSeconds);
+ return false;
+}
