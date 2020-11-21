@@ -1,0 +1,14 @@
+foreach($nitms as $key1=>$value1)
+{
+  foreach($nitmprcs as $key2=>$value2)
+  {
+     if($value1['sku']==$value2['sku'])
+     {
+         $value1['price'] = $value2['price'];
+         $value1['stock'] = $value2['stock'];
+         $value1['min_qty'] = $value2['min_qty'];
+
+         $result[$key1][]=$value1;
+     }
+ }
+}
